@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('Historial de Transacciones - Máquina Expendedora', ~{::main})}">
+<body>
+    <main>
+        <div class="historial-container-wrapper">
+            <div class="container">
+                <div class="historial-container">
+                    <div class="historial-header">
+                        <h1>📊 Historial de Transacciones</h1>
+                        <a th:href="@{/}" class="btn btn-primary">
+                            ← Volver a la Máquina
+                        </a>
+                    </div>
+
+                    <div th:if="${#lists.isEmpty(historial)}" class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <h3>No hay transacciones registradas</h3>
+                        <p>Las transacciones aparecerán aquí una vez que se realicen compras.</p>
+                    </div>
+
+                    <div th:if="${!#lists.isEmpty(historial)}">
+                        <div class="historial-stats">
+                            <div class="stat-item">
+                                <strong>Total de transacciones:</strong> <span th:text="${#lists.size(historial)}">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <small>Mostrando desde la más reciente</small>
+                            </div>
+                        </div>
+
+                        <div th:each="transaccion, iterStat : ${historial}"
+                             th:class="'transaction-card status-' + ${transaccion.estado.name().toLowerCase().replace('_', '-')}">
+                            <div class="transaction-content">
+                                <div class="transaction-main">
+                                    <h5 class="transaction-title">
+                                        🛒 <span th:text="${transaccion.producto.nombre}">Producto</span>
+                                        <small>(<span th:text="${transaccion.producto.codigo}">A1</span>)</small>
+                                    </h5>
+                                    <div class="transaction-details">
+                                        <p><strong>ID:</strong> <code th:text="${transaccion.id}">ID</code></p>
+                                        <p><strong>Descripción:</strong> <span th:text="${transaccion.producto.descripcion}">Descripción</span></p>
+                                        <p class="transaction-date">
+                                            🕒 <span th:text="${#temporals.format(transaccion.fechaTransaccion, 'dd/MM/yyyy HH:mm:ss')}">Fecha</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="transaction-summary">
+                                    <div class="status-badge">
+                                        <span th:class="'badge ' + (${transaccion.estado.name()} == 'COMPLETADA' ? 'bg-success' :
+                                                       (${transaccion.estado.name()} == 'CANCELADA' ? 'bg-danger' :
+                                                       (${transaccion.estado.name()} == 'EN_PROCESO' ? 'bg-warning' : 'bg-secondary')))"
+                                              th:text="${transaccion.estado.name()}">ESTADO</span>
+                                    </div>
+                                    <div class="transaction-amounts">
+                                        <p><strong>Precio:</strong> $<span th:text="${#numbers.formatDecimal(transaccion.producto.precio, 0, 0)}">0</span></p>
+                                        <p><strong>Pagado:</strong> $<span th:text="${#numbers.formatDecimal(transaccion.montoPagado, 0, 0)}">0</span></p>
+                                        <p th:if="${transaccion.cambio > 0}" class="cambio-amount">
+                                            <strong>Cambio:</strong>
+                                            <span class="text-success">$<span th:text="${#numbers.formatDecimal(transaccion.cambio, 0, 0)}">0</span></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estadísticas básicas -->
+                    <div th:if="${!#lists.isEmpty(historial)}" class="statistics-section">
+                        <hr>
+                        <h4>📈 Estadísticas</h4>
+                        <div class="statistics-grid">
+                            <div class="stat-box">
+                                <h5 class="text-success" th:text="${#aggregates.sum(historial.?[estado.name() == 'COMPLETADA'].![producto.precio])}">$0</h5>
+                                <small>Total Vendido</small>
+                            </div>
+                            <div class="stat-box">
+                                <h5 class="text-primary" th:text="${#lists.size(historial.?[estado.name() == 'COMPLETADA'])}">0</h5>
+                                <small>Completadas</small>
+                            </div>
+                            <div class="stat-box">
+                                <h5 class="text-danger" th:text="${#lists.size(historial.?[estado.name() == 'CANCELADA'])}">0</h5>
+                                <small>Canceladas</small>
+                            </div>
+                            <div class="stat-box">
+                                <h5 class="text-info" th:text="${#aggregates.sum(historial.?[estado.name() == 'COMPLETADA'].![cambio])}">$0</h5>
+                                <small>Cambio Total</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script th:src="@{/js/maquina.js}"></script>
+        <script th:src="@{/js/header.js}"></script>
+    </main>
+</body>
+</html>

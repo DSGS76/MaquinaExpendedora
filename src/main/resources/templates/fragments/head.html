@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Máquina Expendedora</title>
+
+    <!-- CSS personalizado -->
+    <link th:href="@{/css/main.css}" rel="stylesheet">
+    <link th:href="@{/css/maquina.css}" rel="stylesheet">
+
+    <!-- Meta tags adicionales -->
+    <meta name="description" content="Máquina Expendedora con patrón State - Matemáticas Discretas">
+    <meta name="author" content="Duvan Gil">
+    <meta name="robots" content="index, follow">
+</head>
+</html>

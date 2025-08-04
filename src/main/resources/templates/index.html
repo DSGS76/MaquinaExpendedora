@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('Máquina Expendedora - Estado Finito', ~{::main})}">
+<body>
+    <main>
+        <div class="maquina-container">
+            <div class="container">
+                <div class="maquina-wrapper">
+                    <!-- Panel principal de la máquina -->
+                    <div class="maquina-panel">
+                        <!-- Ranura de monedas -->
+                        <div class="maquina-slot"></div>
+                        <!-- Botones decorativos -->
+                        <div class="maquina-botones-panel">
+                            <div class="maquina-boton"></div>
+                            <div class="maquina-boton"></div>
+                            <div class="maquina-boton"></div>
+                            <div class="maquina-boton"></div>
+                        </div>
+
+                        <h1>⚙️ Máquina Expendedora</h1>
+
+                        <!-- Display Principal -->
+                        <div class="display" id="display-principal">
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>ESTADO:</strong>
+                                    <span class="estado-badge estado-esperando" id="estado-actual">ESPERANDO</span>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <strong>CAMBIO DISPONIBLE:</strong> $<span id="dinero-disponible">50,000</span>
+                                </div>
+                            </div>
+
+                            <!-- Información de transacción actual -->
+                            <div id="transaccion-info" class="mt-3">
+                                <hr class="border-green">
+                                <strong>TRANSACCIÓN ACTUAL:</strong><br>
+                                <div id="transaccion-detalles"></div>
+                            </div>
+                        </div>
+
+                        <!-- Grid de Productos - Se carga dinámicamente -->
+                        <div class="producto-grid" id="productos-grid">
+                            <!-- Los productos se cargan dinámicamente via JavaScript -->
+                            <div class="loading-products">
+                                <div class="spinner"></div>
+                                <p>Cargando productos...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel de Control Lateral -->
+                    <div class="control-panel">
+                        <!-- Insertar Dinero -->
+                        <div class="control-section">
+                            <h5 class="control-title">💰 Insertar Dinero</h5>
+                            <div class="dinero-buttons">
+                                <button type="button" class="dinero-btn" data-monto="500" disabled>$500</button>
+                                <button type="button" class="dinero-btn" data-monto="1000" disabled>$1.000</button>
+                                <button type="button" class="dinero-btn" data-monto="2000" disabled>$2.000</button>
+                                <button type="button" class="dinero-btn" data-monto="5000" disabled>$5.000</button>
+                            </div>
+                            <div class="monto-personalizado">
+                                <div class="input-group">
+                                    <input type="number" id="montoPersonalizado" class="form-control"
+                                           placeholder="Monto personalizado" min="100" step="100" disabled>
+                                    <button type="button" class="btn btn-success" id="insertar-personalizado" disabled>
+                                        Insertar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="help-text">
+                                💡 Monto mínimo: $100. Seleccione un producto primero.
+                            </div>
+                        </div>
+
+                        <!-- Controles de Operación -->
+                        <div class="control-section">
+                            <h5 class="control-title">🎮 Controles</h5>
+                            <div class="control-buttons">
+                                <button type="button" class="btn btn-primary w-100" id="confirmar-pago" disabled>
+                                    <span class="icon-button">✓</span> Confirmar Pago
+                                </button>
+
+                                <button type="button" class="btn btn-success w-100" id="dispensar-producto" disabled>
+                                    <span class="icon-button">🎁</span> Dispensar
+                                </button>
+
+                                <button type="button" class="btn btn-danger w-100" id="cancelar-transaccion" disabled>
+                                    <span class="icon-button">✕</span> Cancelar
+                                </button>
+                            </div>
+                            <div class="help-text">
+                                💡 Los botones se habilitan según el estado de la máquina.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script th:src="@{/js/maquina.js}"></script>
+        <script th:src="@{/js/header.js}"></script>
+    </main>
+</body>
+</html>
