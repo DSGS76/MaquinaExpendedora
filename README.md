@@ -255,11 +255,13 @@ public interface EstadoMaquina {
 ### Transiciones de Estado
 
 ```
-SELECCIONANDO → ESPERANDO_PAGO → PROCESANDO_PAGO → DISPENSANDO → SELECCIONANDO
-     ↑              ↓                  ↓              ↓
-     ←─────────── CANCELADO ←──────────┴──────────────┘
-     ↑
-     ←─────────── SIN_CAMBIO (Error)
+SELECCIONANDO → ESPERANDO_PAGO → PROCESANDO_PAGO → DISPENSANDO
+     ↑              ↓                  ↓                ↓
+     ←─────────── CANCELADO ←──────────┘                ↓
+     ↑                                                  ↓
+     ←─────────── SIN_CAMBIO (Error)                    ↓
+     ↑                                                  ↓
+     ←──────────────────────────────────────────────────┘
 ```
 
 ### Ventajas del Patrón State
